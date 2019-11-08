@@ -96,12 +96,13 @@
             <artifactId>javatuples</artifactId>
             <version>1.2</version>
         </dependency>
-        <!--fastjson-->
+        <!--fastjson begin-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.25</version>
         </dependency>
+        <!--fastjson end-->
         <!-- JsonTools -->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
