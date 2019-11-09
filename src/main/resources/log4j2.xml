@@ -1,78 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration status="warn">
-    <properties>
+<!-- Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，
+ 你会看到log4j2内部各种详细输出。可以设置成OFF(关闭)或Error(只输出错误信息)
+-->
+<Configuration status="info">
 
-        <Property name="app_name">employeeService</Property>
-        <Property name="log_path">logs/${app_name}</Property>
+  <!-- 日志文件目录和压缩文件目录配置 -->
+  <Properties>
+    <Property name="app_name">spring-boot-employeeService</Property>
+    <Property name="tmp">${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/logs}</Property>
+    <Property name="log_path">${tmp}/${app_name}</Property>
+    <property name="PATTERN">
+      %highlight{%d{HH:mm:ss.SSS} [%t] %-5level %logger{1.}:%L - %msg%n}{%throwable{short.fileName}}{FATAL=white,ERROR=red, WARN=yellow, INFO=green, DEBUG=green, TRACE=blue}
+    </property>
+  </Properties>
 
-    </properties>
-    <appenders>
-        <console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="[%d][%t][%p][%l] %m%n"/>
-        </console>
+  <Appenders>
 
-        <RollingFile name="RollingFileInfo" fileName="${log_path}/info.log"
-                     filePattern="${log_path}/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log.gz">
-            <Filters>
-                <ThresholdFilter level="INFO"/>
-                <ThresholdFilter level="WARN" onMatch="DENY"
-                                 onMismatch="NEUTRAL"/>
-            </Filters>
-            <PatternLayout pattern="[%d][%t][%p][%c:%L] %m%n"/>
-            <Policies>
-                <!-- 归档每天的文件 -->
-                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-                <!-- 限制单个文件大小 -->
-                <SizeBasedTriggeringPolicy size="2 MB"/>
-            </Policies>
-            <!-- 限制每天文件个数 -->
-            <DefaultRolloverStrategy compressionLevel="0" max="10"/>
-        </RollingFile>
+    <!-- 输出控制台日志的配置 -->
+    <Console name="console" target="SYSTEM_OUT">
+      <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+      <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+      <!-- 输出日志的格式 -->
+      <PatternLayout pattern="${PATTERN}"/>
+    </Console>
 
-        <RollingFile name="RollingFileWarn" fileName="${log_path}/warn.log"
-                     filePattern="${log_path}/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log.gz">
-            <Filters>
-                <ThresholdFilter level="WARN"/>
-                <ThresholdFilter level="ERROR" onMatch="DENY"
-                                 onMismatch="NEUTRAL"/>
-            </Filters>
-            <PatternLayout pattern="[%d][%t][%p][%c:%L] %m%n"/>
-            <Policies>
-                <!-- 归档每天的文件 -->
-                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-                <!-- 限制单个文件大小 -->
-                <SizeBasedTriggeringPolicy size="2 MB"/>
-            </Policies>
-            <!-- 限制每天文件个数 -->
-            <DefaultRolloverStrategy compressionLevel="0" max="10"/>
-        </RollingFile>
+    <!-- 打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档 -->
+    <RollingRandomAccessFile name="infoFile" fileName="${log_path}/info.log" immediateFlush="false"
+      filePattern="${log_path}/$${date:yyyy-MM}/info-%d{MM-dd-yyyy}-%i.info.gz">
+      <PatternLayout pattern="${PATTERN}"/>
 
-        <RollingFile name="RollingFileError" fileName="${log_path}/error.log"
-                     filePattern="${log_path}/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log.gz">
-            <ThresholdFilter level="ERROR"/>
-            <PatternLayout pattern="[%d][%t][%p][%c:%L] %m%n"/>
-            <Policies>
-                <!-- 归档每天的文件 -->
-                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-                <!-- 限制单个文件大小 -->
-                <SizeBasedTriggeringPolicy size="2 MB"/>
-            </Policies>
-            <!-- 限制每天文件个数 -->
-            <DefaultRolloverStrategy compressionLevel="0" max="10"/>
-        </RollingFile>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        <SizeBasedTriggeringPolicy size="50 MB"/>
+      </Policies>
 
-    </appenders>
+      <Filters>
+        <!-- 只记录info级别信息 -->
+        <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+      </Filters>
 
-    <loggers>
+      <!-- 指定每天的最大压缩包个数，默认7个，超过了会覆盖之前的 -->
+      <DefaultRolloverStrategy max="50"/>
+    </RollingRandomAccessFile>
 
+    <!-- 存储Warm -->
+    <RollingRandomAccessFile name="warmFile" fileName="${log_path}/warm.log" immediateFlush="false"
+      filePattern="${log_path}/$${date:yyyy-MM}/warm-%d{MM-dd-yyyy}-%i.warn.gz">
+      <PatternLayout pattern="${PATTERN}"/>
 
-        <root level="info">
-            <appender-ref ref="Console"/>
-            <appender-ref ref="RollingFileInfo"/>
-            <appender-ref ref="RollingFileWarn"/>
-            <appender-ref ref="RollingFileError"/>
-        </root>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        <SizeBasedTriggeringPolicy size="50 MB"/>
+      </Policies>
 
-    </loggers>
+      <Filters>
+        <!-- 只记录warn级别信息 -->
+        <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+      </Filters>
 
-</configuration>
+      <!-- 指定每天的最大压缩包个数，默认7个，超过了会覆盖之前的 -->
+      <DefaultRolloverStrategy max="50"/>
+    </RollingRandomAccessFile>
+
+    <!-- 存储所有error信息 -->
+    <RollingRandomAccessFile name="errorFile" fileName="${log_path}/error.log" immediateFlush="false"
+      filePattern="${log_path}/$${date:yyyy-MM}/error-%d{MM-dd-yyyy}-%i.error.gz">
+      <PatternLayout pattern="${PATTERN}"/>
+
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        <SizeBasedTriggeringPolicy size="50 MB"/>
+      </Policies>
+
+      <Filters>
+        <!-- 只记录error级别信息 -->
+        <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+      </Filters>
+
+      <!-- 指定每天的最大压缩包个数，默认7个，超过了会覆盖之前的 -->
+      <DefaultRolloverStrategy max="50"/>
+    </RollingRandomAccessFile>
+
+  </Appenders>
+
+  <!-- 全局配置，默认所有的Logger都继承此配置 -->
+  <Loggers>
+    <!-- AsyncRoot - 异步记录日志 - 需要LMAX Disruptor的支持 -->
+    <AsyncRoot level="info" additivity="false">
+      <!--<AppenderRef ref="console"/>-->
+      <AppenderRef ref="infoFile"/>
+      <AppenderRef ref="warmFile"/>
+      <AppenderRef ref="errorFile"/>
+    </AsyncRoot>
+  </Loggers>
+
+</Configuration>

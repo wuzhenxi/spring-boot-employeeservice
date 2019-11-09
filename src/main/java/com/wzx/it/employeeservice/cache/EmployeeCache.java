@@ -1,10 +1,7 @@
 package com.wzx.it.employeeservice.cache;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import com.wzx.it.employeeservice.domain.EmployeeInfo;
 import com.wzx.it.employeeservice.domain.EmployeeInfoRepository;
 import com.wzx.it.employeeservice.utils.LocalDateTimeUtils;
@@ -12,6 +9,7 @@ import lombok.Synchronized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -20,9 +18,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -40,7 +38,8 @@ public class EmployeeCache {
     private EmployeeInfoRepository employeeInfoRepository;
 
     @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    @Qualifier("redisTemplateUtil")
+    private RedisTemplate<Object, Object> redisTemplate;
 //    @Autowired private StringRedisTemplate redisTemplate;
 
     @Autowired
@@ -54,27 +53,27 @@ public class EmployeeCache {
             .recordStats() // 开启缓存统计
             .build();
 
+
     /**
      * 同步数据
      */
     @Synchronized
     public void syncEmployee() {
         List<EmployeeInfo> employeeInfos = employeeInfoRepository.findAll();
-        for (int i = 0; i < employeeInfos.size(); i++) {
-            EmployeeInfo employeeInfo = employeeInfos.get(i);
-            employeeInfoMap.put(employeeInfo.getId(), employeeInfo);
-            redisTemplate.boundHashOps(EMPLOYEE).put(employeeInfo.getId().toString(), JSONObject.toJSONString(employeeInfo));
+        employeeInfos.forEach(item->{
+            employeeInfoMap.put(item.getId(),item);
+            redisTemplate.boundHashOps(EMPLOYEE).put(item.getId(),item);
             if (!mongoTemplate.collectionExists(EMPLOYEE)) {
                 mongoTemplate.createCollection(EMPLOYEE);
                 mongoTemplate.indexOps(EMPLOYEE);
             }
             Query query = new Query();
-            query.addCriteria(Criteria.where("_id").is(employeeInfo.getId()));
+            query.addCriteria(Criteria.where("_id").is(item.getId()));
 
             Update update = new Update();
-            update.set("name", employeeInfo.getName());
+            update.set("name", item.getName());
             mongoTemplate.upsert(query, update, EmployeeInfo.class, EMPLOYEE);
-        }
+        });
     }
 
     //    @Scheduled(cron = "0 0/1 * * * ?")

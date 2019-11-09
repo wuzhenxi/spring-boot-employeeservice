@@ -30,7 +30,7 @@ public class EmployeeInfoController {
     @Autowired
     private EmployeeCache employeeCache;
 
-    @RequestMapping(value = "/getEmpInfos", method = RequestMethod.GET)
+    @GetMapping("/getEmpInfos")
     public String getEmpInfos() {
         log.info("查询人员信息begin");
         try {
@@ -46,7 +46,7 @@ public class EmployeeInfoController {
         }
     }
 
-    @RequestMapping(value = "/export", method = RequestMethod.GET)
+    @GetMapping("/export")
     public String exportEmployee(@RequestParam(name = "exportType") String exportType) {
         log.info("导出人员信息begin");
         try {
@@ -59,7 +59,7 @@ public class EmployeeInfoController {
         }
     }
 
-    @PostMapping(name = "/freemarter/demo")
+    @PostMapping("/freemarter/demo")
     public String transDataForFreemarker(@RequestParam(name = "freemarkerDomain") FreemarkerDomain freemarkerDomain, @RequestParam(name = "templateText") String templateText) {
         String result = null;
         try {
@@ -71,7 +71,7 @@ public class EmployeeInfoController {
         return JsonUtils.success(result);
     }
 
-    @GetMapping(value = "/cache/{id}")
+    @GetMapping("/cache/{id}")
     public String getEmployeeById(@PathVariable("id")String id) throws Exception {
         log.info("get employee for cache by id = {}",id);
         EmployeeInfo employees = employeeCache.getEmployeesByCache(Integer.valueOf(id));

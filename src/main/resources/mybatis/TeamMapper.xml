@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzx.it.employeeservice.mapper.TeamMapper">
+    <select id="queryAllTeam" resultType="com.wzx.it.employeeservice.entity.Team">
+        select
+        t.id teamId,
+        t.team_name teamName,
+        t.team_owner teamOwner
+        from t_team t order by t.id
+    </select>
+</mapper>
