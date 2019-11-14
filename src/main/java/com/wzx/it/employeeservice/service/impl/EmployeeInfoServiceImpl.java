@@ -4,6 +4,7 @@ import com.wzx.it.employeeservice.domain.EmployeeInfo;
 import com.wzx.it.employeeservice.domain.EmployeeInfoRepository;
 import com.wzx.it.employeeservice.service.IEmployeeInfoService;
 import com.wzx.it.employeeservice.utils.JsonUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +20,8 @@ import java.io.OutputStream;
 import java.util.List;
 
 @Service
+@Slf4j
 public class EmployeeInfoServiceImpl implements IEmployeeInfoService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeInfoServiceImpl.class);
     private static final String EXPORT_TEMPLATE = "1";
 
     @Autowired private EmployeeInfoRepository employeeInfoRepository;
