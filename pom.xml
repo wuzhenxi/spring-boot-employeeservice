@@ -187,7 +187,7 @@
             </plugin>
             <!--  cobertura plugin end -->
         </plugins>
-        <!--<finalName>employee-service-${BUILD_VERSION}</finalName>-->
+        <finalName>employeeservice</finalName>
     </build>
 
 </project>
