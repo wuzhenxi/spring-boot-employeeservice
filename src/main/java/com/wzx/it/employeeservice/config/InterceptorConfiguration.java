@@ -72,10 +72,10 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
      * 添加类型转换器和格式化器
      * @param registry
      */
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addFormatterForFieldType(LocalDate.class, null);
-    }
+//    @Override
+//    public void addFormatters(FormatterRegistry registry) {
+//        registry.addFormatterForFieldType(LocalDate.class, null);
+//    }
 
     /**
      * 跨域支持
