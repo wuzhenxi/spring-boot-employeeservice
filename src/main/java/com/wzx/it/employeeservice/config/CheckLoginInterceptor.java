@@ -14,6 +14,7 @@ public class CheckLoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
+//        SecurityContext sc = SecurityContextHolder.getContext();
         Cookie[] cookies = request.getCookies();
         Arrays.stream(cookies).map(item->{
             if("userId".equalsIgnoreCase(item.getName())){
