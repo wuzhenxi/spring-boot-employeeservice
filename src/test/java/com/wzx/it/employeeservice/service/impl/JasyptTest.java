@@ -20,44 +20,20 @@ public class JasyptTest {
 
     @Test
     public void decrypter() {
-        LOGGER.info("[123qwe!@#]加密后={}", stringEncryptor.encrypt("123qwe!@#"));
-        LOGGER.info("[N9u4tCSDFD5Fut29MTVprOQGn86puiiL]解密后={}", stringEncryptor.decrypt("N9u4tCSDFD5Fut29MTVprOQGn86puiiL"));
+        LOGGER.info("[UzJiRDqZ8AVPzr08POUBag==]解密:{}", stringEncryptor.decrypt("UzJiRDqZ8AVPzr08POUBag=="));
+        LOGGER.info("[sB1g3NU9zHHUh8o/1E2zgg==]解密:{}", stringEncryptor.decrypt("sB1g3NU9zHHUh8o/1E2zgg=="));
+        LOGGER.info("[8imjgIFnmC4ekx3UC+mDseak5js9PX2g]解密:{}", stringEncryptor.decrypt("8imjgIFnmC4ekx3UC+mDseak5js9PX2g"));
+        LOGGER.info("[sHhjUbTUtWPHUSe7jyBDdQ==]解密:{}", stringEncryptor.decrypt("sHhjUbTUtWPHUSe7jyBDdQ=="));
+        LOGGER.info("[SeK2Ye6rfGCrsepfi1gEFl0xVh0MQMHV]解密:{}", stringEncryptor.decrypt("SeK2Ye6rfGCrsepfi1gEFl0xVh0MQMHV"));
     }
 
     @Test
     public void encryptUser() {
-        String encrypt = stringEncryptor.encrypt("root");
-        LOGGER.info("root>>>加密>>>"+encrypt);
-    }
-
-    @Test
-    public void encryptPwd() {
-        String encrypt = stringEncryptor.encrypt("huawei123@");
-        LOGGER.info("huawei123@@>>>加密>>>"+encrypt);
-    }
-
-    @Test
-    public void encryptName() {
-        String encrypt = stringEncryptor.encrypt("test");
-        LOGGER.info("test>>>加密>>>"+encrypt);
-    }
-
-    @Test
-    public void encryptPwd2() {
-        String encrypt = stringEncryptor.encrypt("19941005zsh@");
-        LOGGER.info("19941005zsh@>>>加密>>>" + encrypt);
-    }
-
-    @Test
-    public void decryptUser() {
-        String decrypt = stringEncryptor.decrypt("jj4q/7QzsIX8UCXKAcy9Aw==");
-        LOGGER.info("解密user："+decrypt);
-    }
-
-    @Test
-    public void decryptPwd() {
-        String decrypt = stringEncryptor.decrypt("4JHTKIGy5dkPq3/cjqFTI2mnbmB++aMI");
-        LOGGER.info("解密pwd："+decrypt);
+        LOGGER.info("[root]>>>加密>>>:{}",stringEncryptor.encrypt("root"));
+        LOGGER.info("[admin]>>>加密>>>:{}",stringEncryptor.encrypt("admin"));
+        LOGGER.info("[huawei123@]>>>加密>>>:{}",stringEncryptor.encrypt("huawei123@"));
+        LOGGER.info("[test]>>>加密>>>:{}",stringEncryptor.encrypt("test"));
+        LOGGER.info("[19941005zsh@]>>>加密>>>:{}",stringEncryptor.encrypt("19941005zsh@"));
     }
 
 }
