@@ -11,7 +11,7 @@
     <Property name="tmp">${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/logs}</Property>
     <Property name="log_path">${tmp}/${app_name}</Property>
     <property name="PATTERN">
-      %highlight{%d{HH:mm:ss.SSS} [%t] %-5level %logger{1.}:%L - %msg%n}{%throwable{short.fileName}}{FATAL=white,ERROR=red, WARN=yellow, INFO=green, DEBUG=green, TRACE=blue}
+      %highlight{%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{1.}:%L - %msg%n}{%throwable{short.fileName}}{FATAL=white,ERROR=red, WARN=yellow, INFO=green, DEBUG=green, TRACE=blue}
     </property>
   </Properties>
 
@@ -32,7 +32,7 @@
 
       <Policies>
         <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-        <SizeBasedTriggeringPolicy size="50 MB"/>
+        <SizeBasedTriggeringPolicy size="20 MB"/>
       </Policies>
 
       <Filters>
@@ -41,7 +41,7 @@
       </Filters>
 
       <!-- 指定每天的最大压缩包个数，默认7个，超过了会覆盖之前的 -->
-      <DefaultRolloverStrategy max="50"/>
+      <DefaultRolloverStrategy max="10"/>
     </RollingRandomAccessFile>
 
     <!-- 存储Warm -->
@@ -51,7 +51,7 @@
 
       <Policies>
         <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-        <SizeBasedTriggeringPolicy size="50 MB"/>
+        <SizeBasedTriggeringPolicy size="20 MB"/>
       </Policies>
 
       <Filters>
@@ -60,7 +60,7 @@
       </Filters>
 
       <!-- 指定每天的最大压缩包个数，默认7个，超过了会覆盖之前的 -->
-      <DefaultRolloverStrategy max="50"/>
+      <DefaultRolloverStrategy max="10"/>
     </RollingRandomAccessFile>
 
     <!-- 存储所有error信息 -->
@@ -70,7 +70,7 @@
 
       <Policies>
         <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-        <SizeBasedTriggeringPolicy size="50 MB"/>
+        <SizeBasedTriggeringPolicy size="20 MB"/>
       </Policies>
 
       <Filters>
@@ -79,7 +79,7 @@
       </Filters>
 
       <!-- 指定每天的最大压缩包个数，默认7个，超过了会覆盖之前的 -->
-      <DefaultRolloverStrategy max="50"/>
+      <DefaultRolloverStrategy max="10"/>
     </RollingRandomAccessFile>
 
   </Appenders>
