@@ -200,7 +200,7 @@
             </plugin>
             <!--  cobertura plugin end -->
         </plugins>
-        <finalName>employeeservice</finalName>
+        <finalName>employee-service</finalName>
     </build>
 
 </project>
