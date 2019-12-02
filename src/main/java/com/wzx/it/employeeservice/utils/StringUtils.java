@@ -6,7 +6,7 @@ import java.util.Random;
 public class StringUtils {
 
     /**
-     * 生成16位不重复的随机数，含数字+大小写
+     * 生成不重复的随机数，含数字+大小写
      * @return
      */
     public static String getRandomStr(Integer len) {
