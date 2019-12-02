@@ -13,7 +13,6 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.Cipher;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 
 /**
@@ -21,7 +20,6 @@ import org.apache.commons.codec.binary.Base64;
  * @version 1.0
  * @since 2019/12/2
  */
-@Slf4j
 public class RSAUtils {
     private static final String SIGN_TYPE_RSA = "RSA";
     private static final String SIGN_ALGORITHMS_MD5 = "MD5withRSA";
