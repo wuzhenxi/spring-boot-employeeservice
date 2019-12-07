@@ -11,12 +11,12 @@ public class LocalDateTimeUtils {
     /**
      * 日期格式yyyy-MM-dd
      */
-    public static String DATE_PATTERN = "yyyy-MM-dd";
+    public static final String DATE_PATTERN = "yyyy-MM-dd";
 
     /**
      * 日期时间格式yyyy-MM-dd HH:mm:ss
      */
-    public static String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     /**
      * Date转LocalDateTime

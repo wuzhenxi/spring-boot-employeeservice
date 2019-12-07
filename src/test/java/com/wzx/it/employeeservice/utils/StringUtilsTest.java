@@ -1,11 +1,8 @@
 package com.wzx.it.employeeservice.utils;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import org.junit.After;
-import org.junit.Before;
+import java.util.Arrays;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-
-import java.util.concurrent.*;
 
 /**
  * StringUtils Tester.
@@ -14,31 +11,46 @@ import java.util.concurrent.*;
  * @version 1.0
  * @since <pre>05/24/2019</pre>
  */
+@Slf4j
 public class StringUtilsTest {
 
-    @Before
-    public void before() throws Exception {
-        StringUtils stringUtils = new StringUtils();
-    }
-
-    @After
-    public void after() throws Exception {
-    }
-
-    /**
-     * Method: getRandomStr(Integer len)
-     */
     @Test
-    public void testGetRandomStr() throws Exception {
-        ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
-                .setNameFormat("demo-pool-%d").build();
-        ExecutorService singleThreadPool = new ThreadPoolExecutor(1, 1,
-                0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
+    public void testStr() {
+        StringBuffer enSb = new StringBuffer();
+        StringBuffer zhSb = new StringBuffer();
+        String enStr = "|";
+        String zhStr = "｜";
+        log.info("英文getBytes:{}",enStr.getBytes());
+        log.info("中文getBytes:{}",zhStr.getBytes());
 
-        singleThreadPool.execute(()-> System.out.println(Thread.currentThread().getName()));
-        singleThreadPool.shutdown();
+        char[] chars = enStr.toCharArray();
+        for (char aChar : chars) {
+            enSb.append("\\u").append(Integer.toHexString(aChar));
+        }
+        log.info("英文转Hex:{}",enSb.toString());
+        char[] chars1 = zhStr.toCharArray();
+        for (char aChar1 : chars1) {
+            zhSb.append("\\u").append(Integer.toHexString(aChar1));
+        }
+        log.info("中文转Hex:{}",zhSb.toString());
     }
 
+    @Test
+    public void testSplitStr(){
+        String valueNumber = "12.78";
+        String dottStr = ".";
+        String escapeDottStr = "\\.";
 
-} 
+        log.info("【"+valueNumber+"】直接用【.】切割后的值为:{}", Arrays.asList(valueNumber.split(dottStr)));
+        log.info("【"+valueNumber+"】用转义【.】切割后的值为:{}", Arrays.asList(valueNumber.split(escapeDottStr)));
+
+        String valueStr = "我|你";
+        String versusStr = "|";
+        String escapeVersusStr = "\\|";
+
+        log.info("【"+valueStr+"】直接用【|】切割后的值为:{}", Arrays.asList(valueStr.split(versusStr)));
+        log.info("【"+valueStr+"】用转义【|】切割后的值为:{}", Arrays.asList(valueStr.split(escapeVersusStr)));
+
+    }
+
+}
