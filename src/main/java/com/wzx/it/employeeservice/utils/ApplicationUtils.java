@@ -1,6 +1,5 @@
 package com.wzx.it.employeeservice.utils;
 
-import com.wzx.it.employeeservice.label.GeneteDecryptDirective;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
